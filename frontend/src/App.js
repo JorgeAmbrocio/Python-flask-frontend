@@ -9,7 +9,7 @@ import './App.css';
 function App() {
 
 	document.title = "IPC2 Conferencia"
-	const [student, setStudent] = useState({carne: "", nombre: ""})
+	const [student, setStudent] = useState({carnet: "", nombre: ""})
 
 	function handleChange(event){
 		const { name, value } = event.target
@@ -20,9 +20,16 @@ function App() {
 	}
 
 	const registrar = (event) => {		
-		console.log("estudiante: "+student.carne+" "+student.nombre)
+		console.log("estudiante: "+student.carnet+" "+student.nombre)
 		event.preventDefault();
-		axios.post(`http://localhost:5000/estudiante`, student ).then(res => {
+		axios.post(
+            `http://localhost:5000/estudiante`, 
+            student,
+            {
+                headers:{'content-type':'application/json', 'Access-Token': localStorage.getItem('Access-Token')}
+            }
+        )
+        .then(res => {
 			console.log(res)
 			toast("Asistencia Registrada")
 		}).catch( err => {
@@ -43,7 +50,7 @@ function App() {
 							<Form.Text className="TituloCard"><h2>Conferencia IPC-2</h2></Form.Text>
 							<Form.Group className="mb-3">
 								<Form.Label htmlFor="formName">Carnet</Form.Label>
-								<Form.Control name="carne" value={student.carne} onChange={handleChange} type="text" id="carne" />
+								<Form.Control name="carnet" value={student.carnet} onChange={handleChange} type="text" id="carne" />
 							</Form.Group>
 							<Form.Group className="mb-3">
 								<Form.Label htmlFor="formName">Nombre</Form.Label>
